@@ -1,0 +1,5 @@
+C:\Users\faculty\Desktop\Courses\RMIA 2\Week 1\ConsoleMessage\ConsoleMessageClient\bin\Release\ConsoleMessageClient.exe.config
+C:\Users\faculty\Desktop\Courses\RMIA 2\Week 1\ConsoleMessage\ConsoleMessageClient\bin\Release\ConsoleMessageClient.exe
+C:\Users\faculty\Desktop\Courses\RMIA 2\Week 1\ConsoleMessage\ConsoleMessageClient\bin\Release\ConsoleMessageClient.pdb
+C:\Users\faculty\Desktop\Courses\RMIA 2\Week 1\ConsoleMessage\ConsoleMessageClient\obj\Release\ConsoleMessageClient.exe
+C:\Users\faculty\Desktop\Courses\RMIA 2\Week 1\ConsoleMessage\ConsoleMessageClient\obj\Release\ConsoleMessageClient.pdb

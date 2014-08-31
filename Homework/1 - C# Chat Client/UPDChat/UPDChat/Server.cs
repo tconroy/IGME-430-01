@@ -47,8 +47,7 @@ namespace UPDChat
             Console.WriteLine("Server Started!");
 
             return true;
-            // prevent the console from immediately closing.
-            //Console.ReadKey();
+            
         }
 
 
@@ -103,6 +102,12 @@ namespace UPDChat
             }
 
             Array.Clear(recBuffer, 0, recBuffer.Length); // clear out the buffer 
+        }
+
+        void updateClients() {
+
+            // todo: when a message is recieved, updated all clients
+            return;
         }
 
 

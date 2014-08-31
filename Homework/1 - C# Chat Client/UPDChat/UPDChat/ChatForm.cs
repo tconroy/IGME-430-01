@@ -66,30 +66,46 @@ namespace UPDChat
         // end settings screen
 
 
-        // chat screen
+        // send on button click
         private void sendBtn_Click(object sender, EventArgs e)
         {
-            string text = clientInputTxt.Text;
-
-            // dont send anything if empty.
-            if( String.IsNullOrWhiteSpace(text) ) {
-                return;
+            this.sendMessage(client.username, UPDChat.Client.MessageType.Message, clientInputTxt.Text);
+        }
+        // send on enter
+        private void clientInputTxt_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)13)
+            {
+                this.sendMessage(client.username, UPDChat.Client.MessageType.Message, clientInputTxt.Text);
             }
+        }
 
-            client.sendUDPData(client.username, UPDChat.Client.MessageType.Message, text);
-            
-            // put the text into the chatbox, and clear the input box
-            string message = client.username + ": " + text + Environment.NewLine;
-            chatRecievedBox.AppendText(message);
-            clientInputTxt.Clear();
-
-        } // end chat screen
 
         // show "user is typing" message
+        // TODO
         private void clientInputTxt_TextChanged(object sender, EventArgs e)
         {
             Console.Write(client.username + " is typing...");
         }
+
+        // fires off message to server, clears out local textbox
+        private void sendMessage(string username, Client.MessageType messageType, string messageBody) {
+
+            // breakout if message is empty.
+            if( String.IsNullOrWhiteSpace( messageBody ) ){
+                return;
+            }
+            
+            client.sendUDPData(username, messageType, messageBody);
+            clientInputTxt.Clear();
+
+
+            // put the text into the chatbox, and clear the input box
+            string message = client.username + ": " + messageBody + Environment.NewLine;
+            chatRecievedBox.AppendText(message);
+
+        }
+
 
 
         // ----------------------

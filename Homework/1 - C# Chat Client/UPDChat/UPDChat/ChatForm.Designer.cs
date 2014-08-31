@@ -389,6 +389,7 @@
             this.clientInputTxt.TabIndex = 2;
             this.clientInputTxt.Text = "";
             this.clientInputTxt.TextChanged += new System.EventHandler(this.clientInputTxt_TextChanged);
+            this.clientInputTxt.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.clientInputTxt_KeyPress);
             // 
             // sendBtn
             // 

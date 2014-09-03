@@ -12,3 +12,6 @@ D:\Users\tdc5536\IGME 430-01\Week 1\ConsoleMessage_start\ConsoleMessage_start\Co
 D:\Users\tdc5536\IGME 430-01\Week 1\ConsoleMessage_start\ConsoleMessage_start\ConsoleMessageServer\bin\Debug\ConsoleMessageServer.exe
 D:\Users\tdc5536\IGME 430-01\Week 1\ConsoleMessage_start\ConsoleMessage_start\ConsoleMessageServer\bin\Debug\ConsoleMessageServer.pdb
 D:\Users\tdc5536\IGME 430-01\Week 1\ConsoleMessage_start\ConsoleMessage_start\ConsoleMessageServer\obj\Debug\ConsoleMessageServerReceive.csprojResolveAssemblyReference.cache
+C:\Users\Tom\Code\IGME-430-01\Week 1\ConsoleMessage_start\ConsoleMessage_start\ConsoleMessageServer\bin\Debug\ConsoleMessageServer.exe.config
+C:\Users\Tom\Code\IGME-430-01\Week 1\ConsoleMessage_start\ConsoleMessage_start\ConsoleMessageServer\obj\Debug\ConsoleMessageServer.exe
+C:\Users\Tom\Code\IGME-430-01\Week 1\ConsoleMessage_start\ConsoleMessage_start\ConsoleMessageServer\obj\Debug\ConsoleMessageServer.pdb

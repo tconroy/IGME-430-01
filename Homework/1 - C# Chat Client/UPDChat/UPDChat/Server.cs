@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 
 namespace UPDChat
 {
-    class Server
+    public class Server
     {
         public enum MessageType
         {
@@ -17,11 +18,15 @@ namespace UPDChat
             Message
         }
 
+        // const
+        private const String DEFAULT_NAME = "the Server";
+
+        // public
+        public ServerLogForm serverLog;
+
+        // private
         private String name;
         private String password = null;
-
-        private const String DEFAULT_NAME = "Unnamed Server";
-
         Socket udpSocket;
         List<EndPoint> udpClients = new List<EndPoint>();
         byte[] recBuffer = new byte[512];
@@ -31,23 +36,28 @@ namespace UPDChat
             // store values
             this.setServerName(serverName);
             this.setServerPassword(ServerPass);
-            
+
             // starting a sepearte process.
             Task.Factory.StartNew(() =>
             {
-                EndPoint localEndPoint = new IPEndPoint(IPAddress.Any, 8011); // listen for any IP address
-                udpSocket = new Socket(SocketType.Dgram, ProtocolType.Udp); // creates a socket, tells it that we're using a UDP protocol
-                udpSocket.Bind(localEndPoint);
+                    EndPoint localEndPoint = new IPEndPoint(IPAddress.Any, 8011); // listen for any IP address
+                    udpSocket = new Socket(SocketType.Dgram, ProtocolType.Udp); // creates a socket, tells it that we're using a UDP protocol
+                    udpSocket.Bind(localEndPoint);
 
-                // pass in our recieve buffer, where to begin (0, the beginning), where to end (512 bytes, so 2 packets), 
-                // ignore socket flags, where it's coming from (local endpoint), the callback method, and a reference to this task
-                udpSocket.BeginReceiveFrom(recBuffer, 0, 512, SocketFlags.None, ref localEndPoint, new AsyncCallback(MessageReceivedCallback), this);
+                    // pass in our recieve buffer, where to begin (0, the beginning), where to end (512 bytes, so 2 packets), 
+                    // ignore socket flags, where it's coming from (local endpoint), the callback method, and a reference to this task
+                    udpSocket.BeginReceiveFrom(recBuffer, 0, 512, SocketFlags.None, ref localEndPoint, new AsyncCallback(MessageReceivedCallback), this);                
             });
 
-            Console.WriteLine("Server Started!");
 
-            return true;
+            // make an instance of the server log
+            Server serv = this;
+            serverLog = new ServerLogForm(ref serv);
+            serverLog.Show();
+            //serverLog.insert(this.name + "Started!");
+            this.serverLog.SetText( (string)this.name + " started." );
             
+            return true;
         }
 
 
@@ -70,7 +80,7 @@ namespace UPDChat
             }
             catch (Exception e)
             {
-
+                // todo: hanle callback fail exception
             }
 
             string username = "";
@@ -87,24 +97,28 @@ namespace UPDChat
 
             if (recBuffer[0] == (byte)MessageType.Joined)
             {
-                Console.WriteLine(username + " has joined the server!");
+                serverLog.SetText( (string)username + " has joined " + this.name + ".");
             }
             else if (recBuffer[0] == (byte)MessageType.Left)
             {
-                Console.WriteLine(username + " has left");
+                serverLog.SetText( (string)username + " has left the server.");
             }
             else if (recBuffer[0] == (byte)MessageType.Message)
             {
                 // start right after the username packet ends (4+usernamelength)
                 message = Encoding.ASCII.GetString(recBuffer, 4 + usernameLength, recBuffer[3]);
                 message = username + ": " + message;
-                Console.WriteLine(message);
+                serverLog.SetText(message);
             }
 
             Array.Clear(recBuffer, 0, recBuffer.Length); // clear out the buffer 
         }
 
-        void updateClients() {
+
+
+
+        // sends message to client
+        void updateClients(string message) {
 
             // todo: when a message is recieved, updated all clients
             return;
@@ -136,6 +150,11 @@ namespace UPDChat
             else {
                 this.password = null;
             }
+        }
+
+
+        public void terminate() {
+            Console.Write("Server::terminate()");
         }
 
     }

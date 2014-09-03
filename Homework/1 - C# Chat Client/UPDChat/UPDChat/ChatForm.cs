@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -16,9 +17,18 @@ namespace UPDChat
         private Client client;
         private Server server;
 
+        Thread demoThread;
+        delegate void SetTextCallback(string text);
+
         public ChatForm()
         {
             InitializeComponent();
+            this.demoThread = new Thread(new ThreadStart(this.threadProcSafe));
+            this.demoThread.Start();
+        }
+
+        public void threadProcSafe() { 
+            // todo
         }
 
 
@@ -56,8 +66,8 @@ namespace UPDChat
             string ipAddress = clientIpTxt.Text;
             string pw = clientPassTxt.Text;
 
-            // start the client
-            client = new Client();
+            // start the client. pass in a reference to this form
+            client = new Client(this);
 
             // pass in our settings
             client.startup(username, ipAddress, pw);
@@ -85,12 +95,11 @@ namespace UPDChat
         // TODO
         private void clientInputTxt_TextChanged(object sender, EventArgs e)
         {
-            Console.Write(client.username + " is typing...");
+            //Console.Write(client.username + " is typing...");
         }
 
         // fires off message to server, clears out local textbox
         private void sendMessage(string username, Client.MessageType messageType, string messageBody) {
-
             // breakout if message is empty.
             if( String.IsNullOrWhiteSpace( messageBody ) ){
                 return;
@@ -98,12 +107,23 @@ namespace UPDChat
             
             client.sendUDPData(username, messageType, messageBody);
             clientInputTxt.Clear();
+        }
 
+        public void insertTextToLog( string message ) {
+            this.SetText(message);
+        }
 
-            // put the text into the chatbox, and clear the input box
-            string message = client.username + ": " + messageBody + Environment.NewLine;
-            chatRecievedBox.AppendText(message);
-
+        public void SetText(string text)
+        { 
+            if (this.chatRecievedBox.InvokeRequired)
+            {
+                SetTextCallback d = new SetTextCallback(SetText);
+                this.Invoke(d, new object[] { text });
+            }
+            else
+            {
+                this.chatRecievedBox.AppendText((string)text + Environment.NewLine);
+            }
         }
 
 
@@ -121,11 +141,11 @@ namespace UPDChat
             server = new Server();
 
             // pass in settings
-            //server.startup(serverName, serverPass);
-
             if( server.startup(serverName, serverPass) ){
               // provide feedback in view to user
                 serverBtn.Enabled = false;
+                serverNameTxt.Enabled = false;
+                serverPassTxt.Enabled = false;
             }
         }
 

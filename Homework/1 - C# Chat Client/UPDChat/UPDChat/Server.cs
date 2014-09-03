@@ -27,10 +27,13 @@ namespace UPDChat
         // private
         private String name;
         private String password = null;
+        
+        // misc
         Socket udpSocket;
         List<EndPoint> udpClients = new List<EndPoint>();
         byte[] recBuffer = new byte[512];
 
+        // init
         public bool startup(String serverName = null, String ServerPass = null)
         {
             // store values
@@ -40,8 +43,9 @@ namespace UPDChat
             // starting a sepearte process.
             Task.Factory.StartNew(() =>
             {
-                    EndPoint localEndPoint = new IPEndPoint(IPAddress.Any, 8011); // listen for any IP address
-                    udpSocket = new Socket(SocketType.Dgram, ProtocolType.Udp); // creates a socket, tells it that we're using a UDP protocol
+                    // listen for packets from any IP address, and open / bind a UDP socket.
+                    EndPoint localEndPoint = new IPEndPoint(IPAddress.Any, 8011); 
+                    udpSocket = new Socket(SocketType.Dgram, ProtocolType.Udp);
                     udpSocket.Bind(localEndPoint);
 
                     // pass in our recieve buffer, where to begin (0, the beginning), where to end (512 bytes, so 2 packets), 
@@ -50,11 +54,10 @@ namespace UPDChat
             });
 
 
-            // make an instance of the server log
+            // make an instance of the server log. this is where we'll store messages for viewing server-side.
             Server serv = this;
             serverLog = new ServerLogForm(ref serv);
             serverLog.Show();
-            //serverLog.insert(this.name + "Started!");
             this.serverLog.SetText( (string)this.name + " started." );
             
             return true;
@@ -64,15 +67,15 @@ namespace UPDChat
         // async callback. called every time the task recieves a message, the async result passed in.
         void MessageReceivedCallback(IAsyncResult result)
         {
-
-            // create the remote endpoint, 
+            // instantiate vars for username, message, and remote(client) endpoint.
+            string username = "";
+            string message = "";
             EndPoint remoteEndPoint = new IPEndPoint(0, 0);
 
+            // try to end recieving, and store the client end point if we don't already have it
             try
             {
                 int readBytes = udpSocket.EndReceiveFrom(result, ref remoteEndPoint);
-
-                // useful for chat program:: how to detect if something already exists.
                 if (udpClients.Contains(remoteEndPoint) == false)
                 {
                     udpClients.Add(remoteEndPoint);
@@ -81,13 +84,11 @@ namespace UPDChat
             catch (Exception e)
             {
                 // todo: hanle callback fail exception
+                Console.WriteLine("Exception in Server::MessageRecievedCallback()");
             }
 
-            string username = "";
-            string message = "";
-
             // tells it to go back up and keep listening.
-            udpSocket.BeginReceiveFrom(recBuffer, 0, 512, SocketFlags.None, ref remoteEndPoint, new AsyncCallback(MessageReceivedCallback), this);
+            udpSocket.BeginReceiveFrom(recBuffer, 0, 512, SocketFlags.None, ref remoteEndPoint, new AsyncCallback(MessageReceivedCallback), this); 
 
             // [1] = the remainder, [2]*256 = the contents
             short usernameLength = (short)(recBuffer[1] + (recBuffer[2] * 256));
@@ -95,14 +96,19 @@ namespace UPDChat
             // translate the bytes to a string. start at the 4th byte
             username = Encoding.ASCII.GetString(recBuffer, 4, usernameLength);
 
+            // sent "joined server" packet
             if (recBuffer[0] == (byte)MessageType.Joined)
             {
-                serverLog.SetText( (string)username + " has joined " + this.name + ".");
+                string msg = (string)username + " has joined " + this.name + ".";
+                serverLog.SetText(msg);
             }
+            // sent "left server" packet 
             else if (recBuffer[0] == (byte)MessageType.Left)
             {
-                serverLog.SetText( (string)username + " has left the server.");
+                string msg = (string)username + " has left the server.";
+                serverLog.SetText( msg);
             }
+            // sent standard "chat message" packet.
             else if (recBuffer[0] == (byte)MessageType.Message)
             {
                 // start right after the username packet ends (4+usernamelength)
@@ -111,17 +117,19 @@ namespace UPDChat
                 serverLog.SetText(message);
             }
 
-            Array.Clear(recBuffer, 0, recBuffer.Length); // clear out the buffer 
+            // update the clients, then clear out the recieved buffer.
+            updateClients(recBuffer);
+            Array.Clear(recBuffer, 0, recBuffer.Length);
         }
 
 
-
-
-        // sends message to client
-        void updateClients(string message) {
-
-            // todo: when a message is recieved, updated all clients
-            return;
+        // sends server-recieved message to all clients
+        void updateClients(byte[] recBuffer)
+        {
+            foreach (EndPoint client in udpClients)
+            {
+                udpSocket.SendTo(recBuffer, client);
+            }
         }
 
 
@@ -151,11 +159,5 @@ namespace UPDChat
                 this.password = null;
             }
         }
-
-
-        public void terminate() {
-            Console.Write("Server::terminate()");
-        }
-
     }
 }

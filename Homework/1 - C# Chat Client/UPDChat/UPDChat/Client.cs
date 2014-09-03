@@ -50,27 +50,42 @@ namespace UPDChat
 
             try
             {
-                IPEndPoint serverIPEndpoint = new IPEndPoint(IPAddress.Any, 8011);
+                IPEndPoint serverIPEndpoint = new IPEndPoint(IPAddress.Parse(ip), 8011);
                 udpClient = new UdpClient();
                 udpClient.Connect(serverIPEndpoint);
 
                 sendUDPData(username, MessageType.Joined, "");
                 
                 // start listening for response from the server
-               // serverEndpoint = (EndPoint)serverIPEndpoint;
                 recieveSocket = new Socket(SocketType.Dgram, ProtocolType.Udp); // creates a socket, tells it that we're using a UDP protocol
-                //recieveSocket.Bind(serverEndpoint);
-                recieveSocket.BeginReceiveFrom(recBuffer, 0, 512, SocketFlags.None, ref serverEndpoint, new AsyncCallback(this.recieveUDPData), null);
+                recieveSocket.Bind(serverEndpoint);
+                //recieveSocket.BeginReceiveFrom(recBuffer, 0, 512, SocketFlags.None, ref serverEndpoint, new AsyncCallback(MessageReceivedCallback), this);
             }
             catch (Exception e)
             {
                 Console.WriteLine("Could not connect to server");
                 Console.WriteLine( e.Message);
                 Console.WriteLine(e.StackTrace);
-                System.Environment.Exit(-1);
+                //System.Environment.Exit(-1);
             }
 
+            // begin listening for server
+            // starting a sepearte process.
+            Task.Factory.StartNew(() =>
+            {
+                // listen for packets from server IP address, and open / bind a UDP socket.
+                EndPoint localEndPoint = new IPEndPoint(IPAddress.Parse(ip), 8011);
+                udpSocket = new Socket(SocketType.Dgram, ProtocolType.Udp);
+                udpSocket.Bind(localEndPoint);
+
+                // pass in our recieve buffer, where to begin (0, the beginning), where to end (512 bytes, so 2 packets), 
+                // ignore socket flags, where it's coming from (local endpoint), the callback method, and a reference to this task
+                udpSocket.BeginReceiveFrom(recBuffer, 0, 512, SocketFlags.None, ref localEndPoint, new AsyncCallback(MessageReceivedCallback), this);
+            });
+
         }
+
+
 
 
 
@@ -89,27 +104,35 @@ namespace UPDChat
             }
         }
 
-        private void recieveUDPData(IAsyncResult result)
-        {
-            // create the remote endpoint
-            //EndPoint remoteEndPoint = new IPEndPoint(0, 0);
-            EndPoint remoteEndPoint = serverIPEndpoint;
 
-            // was udpSocket; now recieveSocket
+
+
+
+        // async callback. called every time the task recieves a message, the async result passed in.
+        void MessageReceivedCallback(IAsyncResult result)
+        {
+            // instantiate vars for username, message, and remote(client) endpoint.
+            string username = "";
+            string message = "";
+            EndPoint remoteEndPoint = new IPEndPoint(0, 0);
+
+            // try to end recieving, and store the client end point if we don't already have it
             try
             {
-                int readBytes = recieveSocket.EndReceiveFrom(result, ref serverEndpoint);
+                int readBytes = udpSocket.EndReceiveFrom(result, ref remoteEndPoint);
+                if (udpClients.Contains(remoteEndPoint) == false)
+                {
+                    udpClients.Add(remoteEndPoint);
+                }
             }
             catch (Exception e)
             {
                 // todo: hanle callback fail exception
+                Console.WriteLine("Exception in Client::MessageRecievedCallback()");
             }
 
-            string username = "";
-            string message = "";
-
             // tells it to go back up and keep listening.
-            recieveSocket.BeginReceiveFrom(recBuffer, 0, 512, SocketFlags.None, ref serverEndpoint, new AsyncCallback(recieveUDPData), this);
+            udpSocket.BeginReceiveFrom(recBuffer, 0, 512, SocketFlags.None, ref remoteEndPoint, new AsyncCallback(MessageReceivedCallback), this);
 
             // [1] = the remainder, [2]*256 = the contents
             short usernameLength = (short)(recBuffer[1] + (recBuffer[2] * 256));
@@ -117,25 +140,34 @@ namespace UPDChat
             // translate the bytes to a string. start at the 4th byte
             username = Encoding.ASCII.GetString(recBuffer, 4, usernameLength);
 
+            // sent "joined server" packet
             if (recBuffer[0] == (byte)MessageType.Joined)
             {
-                this.insertText( (string)username + " has joined the server." );
+                string msg = (string)username + " has joined the server";
+                this.insertText(msg);
             }
+            // sent "left server" packet 
             else if (recBuffer[0] == (byte)MessageType.Left)
             {
-                this.insertText( (string)username + " has left the server." );
+                string msg = (string)username + " has left the server.";
+                this.insertText(msg);
             }
+            // sent standard "chat message" packet.
             else if (recBuffer[0] == (byte)MessageType.Message)
             {
                 // start right after the username packet ends (4+usernamelength)
                 message = Encoding.ASCII.GetString(recBuffer, 4 + usernameLength, recBuffer[3]);
                 message = username + ": " + message;
-                this.insertText( message );
+                this.insertText(message);
             }
 
-            Array.Clear(recBuffer, 0, recBuffer.Length); // clear out the buffer
-            
+            // clear out the recieved buffer.
+            Array.Clear(recBuffer, 0, recBuffer.Length);
         }
+
+
+
+
 
         public void sendUDPData(string username, MessageType type, string message)
         {   

@@ -11,6 +11,9 @@ namespace UPDChat
 {
     public class Server
     {
+        // --------------------------------
+        // Properties
+        // --------------------------------
         public enum MessageType
         {
             Joined,
@@ -18,22 +21,23 @@ namespace UPDChat
             Message
         }
 
-        // const
-        private const String DEFAULT_NAME = "the Server";
-
-        // public
+        // obj
         public ServerLogForm serverLog;
+        Socket udpSocket;
 
-        // private
+        // string
+        private const String DEFAULT_NAME = "the Server";
         private String name;
         private String password = null;
         
-        // misc
-        Socket udpSocket;
+        // containers
         List<EndPoint> udpClients = new List<EndPoint>();
         byte[] recBuffer = new byte[512];
 
+        
+        // --------------------------------
         // init
+        // --------------------------------
         public bool startup(String serverName = null, String ServerPass = null)
         {
             // store values
@@ -58,7 +62,7 @@ namespace UPDChat
             Server serv = this;
             serverLog = new ServerLogForm(ref serv);
             serverLog.Show();
-            this.serverLog.SetText( (string)this.name + " started." );
+            serverLog.SetText( (string)this.name + " started." );
             
             return true;
         }
@@ -78,7 +82,6 @@ namespace UPDChat
                 int readBytes = udpSocket.EndReceiveFrom(result, ref remoteEndPoint);
                 if (udpClients.Contains(remoteEndPoint) == false)
                 {
-                    Console.WriteLine("adding remoteEndPoint: " + remoteEndPoint.ToString());
                     udpClients.Add(remoteEndPoint);
                 }
             }
@@ -101,13 +104,13 @@ namespace UPDChat
             if (recBuffer[0] == (byte)MessageType.Joined)
             {
                 string msg = (string)username + " has joined " + this.name + ".";
-                this.serverLog.SetText(msg);
+                serverLog.SetText(msg);
             }
             // sent "left server" packet 
             else if (recBuffer[0] == (byte)MessageType.Left)
             {
                 string msg = (string)username + " has left the server.";
-                this.serverLog.SetText( msg);
+                serverLog.SetText( msg);
             }
             // sent standard "chat message" packet.
             else if (recBuffer[0] == (byte)MessageType.Message)
@@ -115,30 +118,21 @@ namespace UPDChat
                 // start right after the username packet ends (4+usernamelength)
                 message = Encoding.ASCII.GetString(recBuffer, 4 + usernameLength, recBuffer[3]);
                 message = username + ": " + message;
-                this.serverLog.SetText(message);
+                serverLog.SetText(message);
             }
 
             // update the clients, then clear out the recieved buffer.
-            updateClients(recBuffer);
-            Array.Clear(recBuffer, 0, recBuffer.Length);
-        }
-
-
-        // sends server-recieved message to all clients
-        void updateClients(byte[] recBuffer)
-        {
-            foreach (EndPoint client in udpClients)
-            {
+            foreach( EndPoint client in udpClients ){
                 udpSocket.SendTo(recBuffer, client);
             }
-        }
 
+            Array.Clear(recBuffer, 0, recBuffer.Length);
+        }
 
         // ----------
         // SETTERS 
         // ----------
 
-        // setter for server name
         void setServerName( String aName ) {
             if (!String.IsNullOrWhiteSpace(aName))
             {
@@ -148,9 +142,6 @@ namespace UPDChat
                 this.name = DEFAULT_NAME;
             }
         }
-        
-
-        // setter for server password
         void setServerPassword( String aPass ) {
             if (!String.IsNullOrWhiteSpace(aPass))
             {

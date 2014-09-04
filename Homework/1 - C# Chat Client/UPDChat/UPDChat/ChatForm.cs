@@ -93,10 +93,10 @@ namespace UPDChat
 
         // show "user is typing" message
         // TODO
-        private void clientInputTxt_TextChanged(object sender, EventArgs e)
+        /*private void clientInputTxt_TextChanged(object sender, EventArgs e)
         {
-            //Console.Write(client.username + " is typing...");
-        }
+            Console.Write(client.username + " is typing...");
+        }*/
 
         // fires off message to server, clears out local textbox
         private void sendMessage(string username, Client.MessageType messageType, string messageBody) {
@@ -104,7 +104,6 @@ namespace UPDChat
             if( String.IsNullOrWhiteSpace( messageBody ) ){
                 return;
             }
-            
             client.sendUDPData(username, messageType, messageBody);
             clientInputTxt.Clear();
         }
@@ -125,6 +124,8 @@ namespace UPDChat
             {
                 this.chatRecievedBox.AppendText((string)text + Environment.NewLine);
             }
+
+            this.chatRecievedBox.ScrollToCaret();
         }
 
 
@@ -140,11 +141,11 @@ namespace UPDChat
 
             // start the server
             server = new Server();
-
+            
             // pass in settings
             if( server.startup(serverName, serverPass) ){
               // provide feedback in view to user
-                serverBtn.Enabled = false;
+                serverBtn.Enabled     = false;
                 serverNameTxt.Enabled = false;
                 serverPassTxt.Enabled = false;
             }

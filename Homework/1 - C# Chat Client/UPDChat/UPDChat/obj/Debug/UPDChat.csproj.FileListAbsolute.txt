@@ -7,3 +7,4 @@ C:\Users\Tom\Code\IGME-430-01\Homework\1 - C# Chat Client\UPDChat\UPDChat\obj\De
 C:\Users\Tom\Code\IGME-430-01\Homework\1 - C# Chat Client\UPDChat\UPDChat\obj\Debug\UPDChat.pdb
 C:\Users\Tom\Code\IGME-430-01\Homework\1 - C# Chat Client\UPDChat\UPDChat\obj\Debug\UPDChat.ChatForm.resources
 C:\Users\Tom\Code\IGME-430-01\Homework\1 - C# Chat Client\UPDChat\UPDChat\obj\Debug\UPDChat.ServerLogForm.resources
+C:\Users\Tom\Code\IGME-430-01\Homework\1 - C# Chat Client\UPDChat\UPDChat\obj\Debug\UPDChat.csprojResolveAssemblyReference.cache

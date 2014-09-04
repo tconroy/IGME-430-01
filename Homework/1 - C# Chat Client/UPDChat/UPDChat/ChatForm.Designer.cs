@@ -275,9 +275,9 @@
             // clientPassTxt
             // 
             this.clientPassTxt.AccessibleRole = System.Windows.Forms.AccessibleRole.Window;
+            this.clientPassTxt.Enabled = false;
             this.clientPassTxt.Location = new System.Drawing.Point(28, 113);
             this.clientPassTxt.Name = "clientPassTxt";
-            this.clientPassTxt.PasswordChar = '*';
             this.clientPassTxt.Size = new System.Drawing.Size(207, 29);
             this.clientPassTxt.TabIndex = 5;
             // 
@@ -388,7 +388,7 @@
             this.clientInputTxt.Size = new System.Drawing.Size(367, 69);
             this.clientInputTxt.TabIndex = 2;
             this.clientInputTxt.Text = "";
-            this.clientInputTxt.TextChanged += new System.EventHandler(this.clientInputTxt_TextChanged);
+            //this.clientInputTxt.TextChanged += new System.EventHandler(this.clientInputTxt_TextChanged);
             this.clientInputTxt.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.clientInputTxt_KeyPress);
             // 
             // sendBtn
@@ -503,9 +503,14 @@
             // 
             this.serverPassTxt.Location = new System.Drawing.Point(10, 141);
             this.serverPassTxt.Name = "serverPassTxt";
-            this.serverPassTxt.PasswordChar = '*';
             this.serverPassTxt.Size = new System.Drawing.Size(206, 29);
             this.serverPassTxt.TabIndex = 1;
+            //this.serverPassTxt.PasswordChar = '*';
+            // TODO: add password functionality. needs to be implemented.
+            this.serverPassTxt.Text = "( dissabled )";
+            this.serverPassTxt.Enabled = false;
+            
+            
             // 
             // serverNameTxt
             // 

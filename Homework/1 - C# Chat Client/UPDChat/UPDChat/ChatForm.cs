@@ -109,7 +109,8 @@ namespace UPDChat
             clientInputTxt.Clear();
         }
 
-        public void insertTextToLog( string message ) {
+        public void insertText(string message)
+        {
             this.SetText(message);
         }
 
@@ -117,7 +118,7 @@ namespace UPDChat
         { 
             if (this.chatRecievedBox.InvokeRequired)
             {
-                SetTextCallback d = new SetTextCallback(SetText);
+                SetTextCallback d = new SetTextCallback(this.SetText);
                 this.Invoke(d, new object[] { text });
             }
             else

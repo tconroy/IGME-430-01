@@ -50,7 +50,7 @@ namespace UPDChat
 
             try
             {
-                IPEndPoint serverIPEndpoint = new IPEndPoint(IPAddress.Parse(ip), 8011);
+                IPEndPoint serverIPEndpoint = new IPEndPoint(IPAddress.Parse(ip), 13337);
                 udpClient = new UdpClient();
                 udpClient.Connect(serverIPEndpoint);
 
@@ -74,7 +74,7 @@ namespace UPDChat
             Task.Factory.StartNew(() =>
             {
                 // listen for packets from server IP address, and open / bind a UDP socket.
-                EndPoint localEndPoint = new IPEndPoint(IPAddress.Parse(ip), 8011);
+                EndPoint localEndPoint = new IPEndPoint(IPAddress.Parse(ip), 13337);
                 udpSocket = new Socket(SocketType.Dgram, ProtocolType.Udp);
                 udpSocket.Bind(localEndPoint);
 
@@ -91,7 +91,7 @@ namespace UPDChat
 
         
         public void insertText( string message ) {
-            this.chatForm.insertTextToLog(message);
+            this.chatForm.insertText(message);
         }
 
 
@@ -144,13 +144,13 @@ namespace UPDChat
             if (recBuffer[0] == (byte)MessageType.Joined)
             {
                 string msg = (string)username + " has joined the server";
-                this.insertText(msg);
+                insertText(msg);
             }
             // sent "left server" packet 
             else if (recBuffer[0] == (byte)MessageType.Left)
             {
                 string msg = (string)username + " has left the server.";
-                this.insertText(msg);
+                insertText(msg);
             }
             // sent standard "chat message" packet.
             else if (recBuffer[0] == (byte)MessageType.Message)
@@ -158,7 +158,7 @@ namespace UPDChat
                 // start right after the username packet ends (4+usernamelength)
                 message = Encoding.ASCII.GetString(recBuffer, 4 + usernameLength, recBuffer[3]);
                 message = username + ": " + message;
-                this.insertText(message);
+                insertText(message);
             }
 
             // clear out the recieved buffer.

@@ -42,11 +42,9 @@ namespace UPDChat
             // InvokeRequired required compares the thread ID of the 
             // calling thread to the thread ID of the creating thread. 
             // If these threads are different, it returns true.
-
-            SetTextCallback d = new SetTextCallback(SetText);
             if (this.ServerLogTxt.InvokeRequired)
             {
-                //SetTextCallback d = new SetTextCallback(SetText);
+                SetTextCallback d = new SetTextCallback(SetText);
                 this.Invoke(d, new object[] { text });
             }
             else

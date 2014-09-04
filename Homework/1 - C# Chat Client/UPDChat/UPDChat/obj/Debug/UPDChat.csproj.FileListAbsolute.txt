@@ -1,7 +1,6 @@
 C:\Users\Tom\Code\IGME-430-01\Homework\1 - C# Chat Client\UPDChat\UPDChat\bin\Debug\UPDChat.exe.config
 C:\Users\Tom\Code\IGME-430-01\Homework\1 - C# Chat Client\UPDChat\UPDChat\bin\Debug\UPDChat.exe
 C:\Users\Tom\Code\IGME-430-01\Homework\1 - C# Chat Client\UPDChat\UPDChat\bin\Debug\UPDChat.pdb
-C:\Users\Tom\Code\IGME-430-01\Homework\1 - C# Chat Client\UPDChat\UPDChat\obj\Debug\UPDChat.csprojResolveAssemblyReference.cache
 C:\Users\Tom\Code\IGME-430-01\Homework\1 - C# Chat Client\UPDChat\UPDChat\obj\Debug\UPDChat.Properties.Resources.resources
 C:\Users\Tom\Code\IGME-430-01\Homework\1 - C# Chat Client\UPDChat\UPDChat\obj\Debug\UPDChat.csproj.GenerateResource.Cache
 C:\Users\Tom\Code\IGME-430-01\Homework\1 - C# Chat Client\UPDChat\UPDChat\obj\Debug\UPDChat.exe

@@ -44,7 +44,7 @@ namespace UPDChat
             Task.Factory.StartNew(() =>
             {
                     // listen for packets from any IP address, and open / bind a UDP socket.
-                    EndPoint localEndPoint = new IPEndPoint(IPAddress.Any, 8011); 
+                    EndPoint localEndPoint = new IPEndPoint(IPAddress.Any, 13337); 
                     udpSocket = new Socket(SocketType.Dgram, ProtocolType.Udp);
                     udpSocket.Bind(localEndPoint);
 
@@ -78,6 +78,7 @@ namespace UPDChat
                 int readBytes = udpSocket.EndReceiveFrom(result, ref remoteEndPoint);
                 if (udpClients.Contains(remoteEndPoint) == false)
                 {
+                    Console.WriteLine("adding remoteEndPoint: " + remoteEndPoint.ToString());
                     udpClients.Add(remoteEndPoint);
                 }
             }
@@ -100,13 +101,13 @@ namespace UPDChat
             if (recBuffer[0] == (byte)MessageType.Joined)
             {
                 string msg = (string)username + " has joined " + this.name + ".";
-                serverLog.SetText(msg);
+                this.serverLog.SetText(msg);
             }
             // sent "left server" packet 
             else if (recBuffer[0] == (byte)MessageType.Left)
             {
                 string msg = (string)username + " has left the server.";
-                serverLog.SetText( msg);
+                this.serverLog.SetText( msg);
             }
             // sent standard "chat message" packet.
             else if (recBuffer[0] == (byte)MessageType.Message)
@@ -114,7 +115,7 @@ namespace UPDChat
                 // start right after the username packet ends (4+usernamelength)
                 message = Encoding.ASCII.GetString(recBuffer, 4 + usernameLength, recBuffer[3]);
                 message = username + ": " + message;
-                serverLog.SetText(message);
+                this.serverLog.SetText(message);
             }
 
             // update the clients, then clear out the recieved buffer.

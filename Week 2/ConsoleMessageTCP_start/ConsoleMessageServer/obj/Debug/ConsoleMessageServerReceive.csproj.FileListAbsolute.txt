@@ -1,0 +1,10 @@
+C:\Users\faculty\Desktop\Courses\RMIA 2\Week 1\ConsoleMessage\ConsoleMessageServer\bin\Debug\ConsoleMessageServer.exe.config
+C:\Users\faculty\Desktop\Courses\RMIA 2\Week 1\ConsoleMessage\ConsoleMessageServer\obj\Debug\ConsoleMessageServer.exe
+C:\Users\faculty\Desktop\Courses\RMIA 2\Week 1\ConsoleMessage\ConsoleMessageServer\obj\Debug\ConsoleMessageServer.pdb
+C:\Users\faculty\Desktop\Courses\RMIA 2\Week 1\ConsoleMessage_start\ConsoleMessageServer\bin\Debug\ConsoleMessageServer.exe.config
+C:\Users\faculty\Desktop\Courses\RMIA 2\Week 1\ConsoleMessage_start\ConsoleMessageServer\bin\Debug\ConsoleMessageServer.exe
+C:\Users\faculty\Desktop\Courses\RMIA 2\Week 1\ConsoleMessage_start\ConsoleMessageServer\bin\Debug\ConsoleMessageServer.pdb
+C:\Users\faculty\Desktop\Courses\RMIA 2\Week 1\ConsoleMessage_start\ConsoleMessageServer\obj\Debug\ConsoleMessageServer.exe
+C:\Users\faculty\Desktop\Courses\RMIA 2\Week 1\ConsoleMessage_start\ConsoleMessageServer\obj\Debug\ConsoleMessageServer.pdb
+C:\Users\faculty\Desktop\Courses\RMIA 2\Week 1\ConsoleMessageTCP_start\ConsoleMessageServer\bin\Debug\ConsoleMessageServer.exe.config
+C:\Users\Tom\Code\IGME-430-01\Week 2\ConsoleMessageTCP_start\ConsoleMessageServer\bin\Debug\ConsoleMessageServer.exe.config

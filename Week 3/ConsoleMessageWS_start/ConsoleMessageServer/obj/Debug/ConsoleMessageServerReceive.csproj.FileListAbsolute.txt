@@ -55,5 +55,21 @@ C:\Users\faculty\Desktop\Courses\RMIA 2\Week 1\ConsoleMessageWS_start\ConsoleMes
 C:\Users\faculty\Desktop\Courses\RMIA 2\Week 1\ConsoleMessageWS_start\ConsoleMessageServer\obj\Debug\ConsoleMessageServer.exe
 C:\Users\faculty\Desktop\Courses\RMIA 2\Week 1\ConsoleMessageWS_start\ConsoleMessageServer\obj\Debug\ConsoleMessageServer.pdb
 C:\Users\Tom\Code\IGME-430-01\Week 3\ConsoleMessageWS_start\ConsoleMessageServer\bin\Debug\ConsoleMessageServer.exe.config
+C:\Users\Tom\Code\IGME-430-01\Week 3\ConsoleMessageWS_start\ConsoleMessageServer\bin\Debug\ConsoleMessageServer.exe
+C:\Users\Tom\Code\IGME-430-01\Week 3\ConsoleMessageWS_start\ConsoleMessageServer\bin\Debug\ConsoleMessageServer.pdb
+C:\Users\Tom\Code\IGME-430-01\Week 3\ConsoleMessageWS_start\ConsoleMessageServer\bin\Debug\log4net.dll
+C:\Users\Tom\Code\IGME-430-01\Week 3\ConsoleMessageWS_start\ConsoleMessageServer\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Tom\Code\IGME-430-01\Week 3\ConsoleMessageWS_start\ConsoleMessageServer\bin\Debug\SuperSocket.Common.dll
+C:\Users\Tom\Code\IGME-430-01\Week 3\ConsoleMessageWS_start\ConsoleMessageServer\bin\Debug\SuperSocket.SocketBase.dll
+C:\Users\Tom\Code\IGME-430-01\Week 3\ConsoleMessageWS_start\ConsoleMessageServer\bin\Debug\SuperSocket.SocketEngine.dll
+C:\Users\Tom\Code\IGME-430-01\Week 3\ConsoleMessageWS_start\ConsoleMessageServer\bin\Debug\SuperWebSocket.dll
+C:\Users\Tom\Code\IGME-430-01\Week 3\ConsoleMessageWS_start\ConsoleMessageServer\bin\Debug\log4net.xml
+C:\Users\Tom\Code\IGME-430-01\Week 3\ConsoleMessageWS_start\ConsoleMessageServer\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Tom\Code\IGME-430-01\Week 3\ConsoleMessageWS_start\ConsoleMessageServer\bin\Debug\SuperSocket.Common.pdb
+C:\Users\Tom\Code\IGME-430-01\Week 3\ConsoleMessageWS_start\ConsoleMessageServer\bin\Debug\SuperSocket.SocketBase.pdb
+C:\Users\Tom\Code\IGME-430-01\Week 3\ConsoleMessageWS_start\ConsoleMessageServer\bin\Debug\SuperSocket.SocketEngine.pdb
+C:\Users\Tom\Code\IGME-430-01\Week 3\ConsoleMessageWS_start\ConsoleMessageServer\bin\Debug\SuperWebSocket.pdb
+C:\Users\Tom\Code\IGME-430-01\Week 3\ConsoleMessageWS_start\ConsoleMessageServer\bin\Debug\SuperWebSocket.xml
+C:\Users\Tom\Code\IGME-430-01\Week 3\ConsoleMessageWS_start\ConsoleMessageServer\obj\Debug\ConsoleMessageServerReceive.csprojResolveAssemblyReference.cache
 C:\Users\Tom\Code\IGME-430-01\Week 3\ConsoleMessageWS_start\ConsoleMessageServer\obj\Debug\ConsoleMessageServer.exe
 C:\Users\Tom\Code\IGME-430-01\Week 3\ConsoleMessageWS_start\ConsoleMessageServer\obj\Debug\ConsoleMessageServer.pdb

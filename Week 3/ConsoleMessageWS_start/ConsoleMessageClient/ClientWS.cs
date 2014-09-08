@@ -52,6 +52,11 @@ namespace ConsoleMessageClient
                 Console.Write("Enter IP of chat server: ");
                 ip = Console.ReadLine();
 
+                wsClient = new ClientWebSocket();
+                wsClient.ConnectAsync( new Uri("ws://" + ip + ":8082"), ct ); // pass in web socket URI, websocket port, and the cancellation token
+
+                sendWSData( username, MessageType.Joined, "" );
+
 
             }
             catch (Exception e)
@@ -59,6 +64,16 @@ namespace ConsoleMessageClient
                 Console.WriteLine("Could not connect to server");
                 System.Environment.Exit(-1);
             }
+
+            //
+            Task.Factory.StartNew(() =>
+            {
+                // if the socket is open
+                if( wsClient.State == WebSocketState.Open ){
+                    // get data from the server
+                    getWSData();
+                }    
+            });
 
 
 
@@ -84,14 +99,37 @@ namespace ConsoleMessageClient
             sendWSData(username, MessageType.Left, "");
         }
 
+        /**
+         * recieve data to the server websocket
+         * */
         async void getWSData()
         {
-            
+            byte[] buffer = new byte[1024];
+            ArraySegment<byte> bufferSegment = new ArraySegment<byte>(buffer);
+            // "await" allows it to run async
+            WebSocketReceiveResult result = await wsClient.ReceiveAsync(bufferSegment, ct);
+
+            ChatMessage message = JsonConvert.DeserializeObject<ChatMessage>(Encoding.UTF8.GetString(bufferSegment.Array, 0, result.Count));
+
+            Console.WriteLine(message.username + ": " + message.data);
+
+            await Task.Factory.StartNew(() =>
+            {
+                getWSData();
+            });
         }
 
+        /**
+         * transmits data to the server websocket
+         * */
         async void sendWSData(string username, MessageType type, string message)
         {
+            ChatMessage msg = new ChatMessage() { username = username, type = type, data = message }; // pass in a collection as the variables for an object
+            string json = JsonConvert.SerializeObject(msg);
 
+            byte[] buffer = System.Text.Encoding.ASCII.GetBytes(json);
+            ArraySegment<byte> bufferSegment = new ArraySegment<byte>(buffer);
+            await wsClient.SendAsync( bufferSegment, WebSocketMessageType.Binary, true, ct );
         }
 
     }

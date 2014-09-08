@@ -8,3 +8,8 @@ C:\Users\faculty\Desktop\Courses\RMIA 2\Week 1\ConsoleMessage_start\ConsoleMessa
 C:\Users\faculty\Desktop\Courses\RMIA 2\Week 1\ConsoleMessage_start\ConsoleMessageServer\bin\Release\ConsoleMessageServer.pdb
 C:\Users\faculty\Desktop\Courses\RMIA 2\Week 1\ConsoleMessage_start\ConsoleMessageServer\obj\Release\ConsoleMessageServer.exe
 C:\Users\faculty\Desktop\Courses\RMIA 2\Week 1\ConsoleMessage_start\ConsoleMessageServer\obj\Release\ConsoleMessageServer.pdb
+C:\Users\faculty\Desktop\Courses\RMIA 2\Week 1\ConsoleMessageTCP\ConsoleMessageServer\bin\Release\ConsoleMessageServer.exe.config
+C:\Users\faculty\Desktop\Courses\RMIA 2\Week 1\ConsoleMessageTCP\ConsoleMessageServer\bin\Release\ConsoleMessageServer.exe
+C:\Users\faculty\Desktop\Courses\RMIA 2\Week 1\ConsoleMessageTCP\ConsoleMessageServer\bin\Release\ConsoleMessageServer.pdb
+C:\Users\faculty\Desktop\Courses\RMIA 2\Week 1\ConsoleMessageTCP\ConsoleMessageServer\obj\Release\ConsoleMessageServer.exe
+C:\Users\faculty\Desktop\Courses\RMIA 2\Week 1\ConsoleMessageTCP\ConsoleMessageServer\obj\Release\ConsoleMessageServer.pdb

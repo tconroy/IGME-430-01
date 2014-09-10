@@ -1,0 +1,7 @@
+c:\users\faculty\documents\visual studio 2012\Projects\ConsoleMessage\ConsoleMessageServer\bin\Debug\ConsoleMessageServer.exe.config
+C:\Users\faculty\Desktop\Courses\RMIA 2\Week 1\ConsoleMessage\ConsoleMessageServer\bin\Debug\ConsoleMessageServer.exe.config
+C:\Users\faculty\Desktop\Courses\RMIA 2\Week 1\ConsoleMessage\ConsoleMessageServer\bin\Debug\ConsoleMessageServer.exe
+C:\Users\faculty\Desktop\Courses\RMIA 2\Week 1\ConsoleMessage\ConsoleMessageServer\bin\Debug\ConsoleMessageServer.pdb
+C:\Users\faculty\Desktop\Courses\RMIA 2\Week 1\ConsoleMessage\ConsoleMessageServer\obj\Debug\ConsoleMessageServer.csprojResolveAssemblyReference.cache
+C:\Users\faculty\Desktop\Courses\RMIA 2\Week 1\ConsoleMessage\ConsoleMessageServer\obj\Debug\ConsoleMessageServer.exe
+C:\Users\faculty\Desktop\Courses\RMIA 2\Week 1\ConsoleMessage\ConsoleMessageServer\obj\Debug\ConsoleMessageServer.pdb

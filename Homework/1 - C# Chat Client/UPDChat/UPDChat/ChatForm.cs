@@ -91,13 +91,6 @@ namespace UPDChat
         }
 
 
-        // show "user is typing" message
-        // TODO
-        /*private void clientInputTxt_TextChanged(object sender, EventArgs e)
-        {
-            Console.Write(client.username + " is typing...");
-        }*/
-
         // fires off message to server, clears out local textbox
         private void sendMessage(string username, Client.MessageType messageType, string messageBody) {
             // breakout if message is empty.
@@ -125,7 +118,16 @@ namespace UPDChat
                 this.chatRecievedBox.AppendText((string)text + Environment.NewLine);
             }
 
-            this.chatRecievedBox.ScrollToCaret();
+            try
+            {
+                this.chatRecievedBox.ScrollToCaret();
+            }
+            catch (Exception e)
+            {
+                // could not scroll
+                Console.WriteLine("Exception trying to scroll caret");
+                Console.WriteLine(e.Data);
+            }
         }
 
 
@@ -148,6 +150,20 @@ namespace UPDChat
                 serverBtn.Enabled     = false;
                 serverNameTxt.Enabled = false;
                 serverPassTxt.Enabled = false;
+            }
+        }
+
+
+
+        // fires when form is closed
+        private void ChatForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if( this.server != null ){
+               //todo: this.server.shutDown();
+            }
+
+            if( this.client != null ){
+                this.client.shutDown();
             }
         }
 

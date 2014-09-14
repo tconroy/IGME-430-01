@@ -388,7 +388,6 @@
             this.clientInputTxt.Size = new System.Drawing.Size(367, 69);
             this.clientInputTxt.TabIndex = 2;
             this.clientInputTxt.Text = "";
-            //this.clientInputTxt.TextChanged += new System.EventHandler(this.clientInputTxt_TextChanged);
             this.clientInputTxt.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.clientInputTxt_KeyPress);
             // 
             // sendBtn
@@ -501,16 +500,12 @@
             // 
             // serverPassTxt
             // 
+            this.serverPassTxt.Enabled = false;
             this.serverPassTxt.Location = new System.Drawing.Point(10, 141);
             this.serverPassTxt.Name = "serverPassTxt";
             this.serverPassTxt.Size = new System.Drawing.Size(206, 29);
             this.serverPassTxt.TabIndex = 1;
-            //this.serverPassTxt.PasswordChar = '*';
-            // TODO: add password functionality. needs to be implemented.
             this.serverPassTxt.Text = "( dissabled )";
-            this.serverPassTxt.Enabled = false;
-            
-            
             // 
             // serverNameTxt
             // 
@@ -528,6 +523,7 @@
             this.Controls.Add(this.label1);
             this.Name = "ChatForm";
             this.Text = "UDPChat";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ChatForm_FormClosed);
             this.tabContainer.ResumeLayout(false);
             this.selectTypeTab.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);

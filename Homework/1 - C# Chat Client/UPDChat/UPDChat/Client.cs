@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
+using System.Timers;
 
 namespace UPDChat
 {
@@ -14,12 +15,14 @@ namespace UPDChat
         {
             Joined,
             Left,
-            Message
+            Message,
+            Command
         }
 
         // obj
         UdpClient udpClient;
         ChatForm chatForm;
+        Timer timer;
 
         // string
         public string username;
@@ -36,6 +39,7 @@ namespace UPDChat
         // -------------------------------
         public Client( ChatForm formRef ){
             this.chatForm = formRef;
+            this.timer = new Timer(5000);
         }
 
         // -------------------------------
@@ -79,13 +83,16 @@ namespace UPDChat
         }
 
 
+        // fired when the form is closed
+        public void shutDown() {
+            sendUDPData(username, MessageType.Left, "");
+        }
+
+
 
         public void shutdown(object sender, ConsoleCancelEventArgs args)
         {
-            if (udpClient != null && username != "")
-            {
-                sendUDPData(username, MessageType.Left, "");
-            }
+            sendUDPData(username, MessageType.Left, "left the server");
         }
 
 
@@ -96,7 +103,7 @@ namespace UPDChat
 
         // transmit UDP packets over the wire to server
         public void sendUDPData(string username, MessageType type, string message)
-        {   
+        {            
             // set up byte arrays where we'll store message parts
             byte[] packetBuffer   = new byte[4];
             byte[] usernameBuffer = System.Text.Encoding.ASCII.GetBytes(username);
@@ -117,36 +124,50 @@ namespace UPDChat
         public void getUDPData()
         {
             IPEndPoint endPoint = new IPEndPoint(0, 0);
-            byte[] buffer = udpClient.Receive(ref endPoint);
-
-            //pull username from buffer. convert the bytes into a string.
-            short usernameLength = (short)(buffer[1] + (buffer[2] * 256));
-            string username      = Encoding.ASCII.GetString(buffer, 4, usernameLength);
-            string message       = ""; // the message we want to display to the user.
-
-            if (buffer[0] == (byte)MessageType.Joined)
+            try
             {
-                message = (string)username + " has joined the server";
-            }
-            else if (buffer[0] == (byte)MessageType.Left)
-            {
-                message = (string)username + " has left the server.";
-            }
-            else if (buffer[0] == (byte)MessageType.Message)
-            {
-                // start right after the username packet ends (4+usernamelength)
-                message = Encoding.ASCII.GetString(buffer, 4 + usernameLength, buffer[3]);
-                message = username + ": " + message;
-            }
+                //pull username from buffer. convert the bytes into a string.
+                byte[] buffer        = udpClient.Receive(ref endPoint);
+                short usernameLength = (short)(buffer[1] + (buffer[2] * 256));
+                string username      = Encoding.ASCII.GetString(buffer, 4, usernameLength);
+                string message       = "";
 
-            // send to window.
-            insertText(message);
+                if (buffer[0] == (byte)MessageType.Joined)
+                {
+                    message = (string)username + " has joined the server";
+                }
 
-            // clear out the recieved buffer.
-            Array.Clear(buffer, 0, buffer.Length);    
-        
-            // repeat call
-            getUDPData();
+                else if (buffer[0] == (byte)MessageType.Left)
+                {
+                    message = (string)username + " has left the server.";
+                }
+
+                else if (buffer[0] == (byte)MessageType.Message)
+                {
+                    // start right after the username packet ends (4+usernamelength)
+                    message = Encoding.ASCII.GetString(buffer, 4 + usernameLength, buffer[3]);
+                    message = username + ": " + message;
+                }
+
+                else if ( buffer[0] == (byte)MessageType.Command )
+                {
+                    message = Encoding.ASCII.GetString(buffer, 4 + usernameLength, buffer[3]);
+                }
+
+                // send to window.
+                insertText(message);
+
+                // clear out the recieved buffer.
+                Array.Clear(buffer, 0, buffer.Length);
+
+                // repeat call
+                getUDPData();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception in getUDPData()");
+                Console.WriteLine(e.Data);
+            }
         }
 
 

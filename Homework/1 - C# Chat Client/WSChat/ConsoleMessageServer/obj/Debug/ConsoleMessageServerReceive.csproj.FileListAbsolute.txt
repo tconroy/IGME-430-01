@@ -54,3 +54,6 @@ C:\Users\Tom\Code\IGME-430-01\Week 3\ConsoleMessageServer\bin\Debug\SuperWebSock
 C:\Users\Tom\Code\IGME-430-01\Week 3\ConsoleMessageServer\obj\Debug\ConsoleMessageServerReceive.csprojResolveAssemblyReference.cache
 C:\Users\Tom\Code\IGME-430-01\Week 3\ConsoleMessageServer\obj\Debug\ConsoleMessageServer.exe
 C:\Users\Tom\Code\IGME-430-01\Week 3\ConsoleMessageServer\obj\Debug\ConsoleMessageServer.pdb
+C:\Users\Tom\Code\IGME-430-01\Homework\1 - C# Chat Client\WSChat\ConsoleMessageServer\bin\Debug\ConsoleMessageServer.exe.config
+C:\Users\Tom\Code\IGME-430-01\Homework\1 - C# Chat Client\WSChat\ConsoleMessageServer\obj\Debug\ConsoleMessageServer.exe
+C:\Users\Tom\Code\IGME-430-01\Homework\1 - C# Chat Client\WSChat\ConsoleMessageServer\obj\Debug\ConsoleMessageServer.pdb

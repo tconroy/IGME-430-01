@@ -18,7 +18,8 @@ namespace UPDChat
         {
             Joined,
             Left,
-            Message
+            Message,
+            Command
         }
 
         // obj
@@ -32,6 +33,7 @@ namespace UPDChat
         
         // containers
         List<EndPoint> udpClients = new List<EndPoint>();
+        List<String> udpClientNames = new List<String>();
         byte[] recBuffer = new byte[512];
 
         
@@ -74,6 +76,7 @@ namespace UPDChat
             // instantiate vars for username, message, and remote(client) endpoint.
             string username = "";
             string message = "";
+            bool go        = true;
             EndPoint remoteEndPoint = new IPEndPoint(0, 0);
 
             // try to end recieving, and store the client end point if we don't already have it
@@ -92,7 +95,8 @@ namespace UPDChat
             }
 
             // tells it to go back up and keep listening.
-            udpSocket.BeginReceiveFrom(recBuffer, 0, 512, SocketFlags.None, ref remoteEndPoint, new AsyncCallback(MessageReceivedCallback), this); 
+            udpSocket.BeginReceiveFrom(recBuffer, 0, 512, SocketFlags.None, ref remoteEndPoint, new AsyncCallback(MessageReceivedCallback), this);
+             
 
             // [1] = the remainder, [2]*256 = the contents
             short usernameLength = (short)(recBuffer[1] + (recBuffer[2] * 256));
@@ -105,28 +109,77 @@ namespace UPDChat
             {
                 string msg = (string)username + " has joined " + this.name + ".";
                 serverLog.SetText(msg);
+                if( ! udpClientNames.Contains(username) ){
+                    udpClientNames.Add(username);
+                }
+
             }
             // sent "left server" packet 
             else if (recBuffer[0] == (byte)MessageType.Left)
             {
                 string msg = (string)username + " has left the server.";
                 serverLog.SetText( msg);
+                if( udpClientNames.Contains(username) ){
+                    udpClientNames.Remove(username);
+                }
+                if (udpClients.Contains(remoteEndPoint) == true)
+                {
+                    udpClients.Remove(remoteEndPoint);
+                }
             }
             // sent standard "chat message" packet.
             else if (recBuffer[0] == (byte)MessageType.Message)
             {
                 // start right after the username packet ends (4+usernamelength)
                 message = Encoding.ASCII.GetString(recBuffer, 4 + usernameLength, recBuffer[3]);
-                message = username + ": " + message;
-                serverLog.SetText(message);
+                string msg = username + ": " + message;
+                serverLog.SetText(msg);
+
+                if( message[0] == '/'  ){
+                    string cmd = message.TrimStart('/');
+                    this.serverCommand(ref remoteEndPoint, cmd.Trim(), username, MessageType.Command);
+                    // dont want to send it to all clients so breakout
+                    go = false; 
+                }
+
             }
 
+            // only update if we have data in recBuffer
             // update the clients, then clear out the recieved buffer.
-            foreach( EndPoint client in udpClients ){
-                udpSocket.SendTo(recBuffer, client);
+            if( go )
+            {
+                foreach( EndPoint client in udpClients ){
+                    udpSocket.SendTo(recBuffer, client);
+                }            
             }
-
             Array.Clear(recBuffer, 0, recBuffer.Length);
+        }
+
+
+        void serverCommand(ref EndPoint client, string cmd, string username, MessageType type)
+        {
+            // user typed /list, so send list of active users.
+            if( cmd == "list" )
+            {
+                string message = "Currently chatting with: " + String.Join(", ", udpClientNames);
+                serverLog.SetText( message );
+
+                // set up byte arrays where we'll store message parts
+                byte[] packetBuffer   = new byte[4];
+                byte[] usernameBuffer = System.Text.Encoding.ASCII.GetBytes(username);
+                byte[] messageBuffer  = System.Text.Encoding.ASCII.GetBytes(message);
+
+                // break up into 256bit chunks
+                packetBuffer[0] = (byte)type;
+                packetBuffer[1] = (byte)(usernameBuffer.Length % 256);
+                packetBuffer[2] = (byte)(usernameBuffer.Length / 256);
+                packetBuffer[3] = (byte)(messageBuffer.Length);
+
+                // concat the byte array together and send it on its way
+                byte[] udpMessage = packetBuffer.Concat(usernameBuffer).Concat(messageBuffer).ToArray();
+
+                udpSocket.SendTo(udpMessage, client);
+            }
         }
 
         // ----------

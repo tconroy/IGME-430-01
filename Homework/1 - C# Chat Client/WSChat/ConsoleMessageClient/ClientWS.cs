@@ -17,7 +17,8 @@ namespace ConsoleMessageClient
     {
         Joined,
         Left,
-        Message
+        Message,
+        Command
     }
 
     //This will be a class we will use for messages
@@ -94,7 +95,16 @@ namespace ConsoleMessageClient
 
                 if (text != "" && text != null)
                 {
-                    sendWSData(username, MessageType.Message, text);
+                    if (text[0] == '/')
+                    {
+                        text = text.Substring(1);
+                        sendWSData(username, MessageType.Command, text);
+                    }
+                    else
+                    {
+                        sendWSData(username, MessageType.Message, text);
+                    }
+
                 }
             }
         }

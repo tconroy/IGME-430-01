@@ -16,7 +16,8 @@ namespace ConsoleMessageServer
     {
         Joined,
         Left,
-        Message
+        Message,
+        Command
     }
 
     //This will be a class we will use for messages
@@ -35,6 +36,7 @@ namespace ConsoleMessageServer
         WebSocketServer webSocket;
         //WebSocketSession client; 
         List<WebSocketSession> wsClients = new List<WebSocketSession>();
+        List<String> wsClientNames = new List<String>();
 
         public void startup()
         {
@@ -82,10 +84,27 @@ namespace ConsoleMessageServer
             if (chatMessage.type == MessageType.Joined)
             {
                 SendChatMessage(chatMessage.username, " has joined the server");
+                if (! wsClientNames.Contains(chatMessage.username) )
+                {
+                    wsClientNames.Add(chatMessage.username);
+                }
             }
             if (chatMessage.type == MessageType.Left)
             {
                 SendChatMessage(chatMessage.username, " has left the server");
+                if( wsClientNames.Contains(chatMessage.username) )
+                {
+                    wsClientNames.Remove(chatMessage.username);
+                }
+            }
+            if( chatMessage.type == MessageType.Command )
+            {
+                // todo: handle commands
+                if( chatMessage.data == "list" )
+                {
+                    string msg = "Chatting With: " + String.Join(", ", wsClientNames);
+                    SendChatMessage(chatMessage.username, msg, session);
+                }
             }
             if (chatMessage.type == MessageType.Message)
             {
@@ -101,7 +120,7 @@ namespace ConsoleMessageServer
         }
 
         //sending a chat message
-        public void SendChatMessage(string username, string data)
+        public void SendChatMessage(string username, string data, WebSocketSession targetClient = null)
         {
             //start a new task so that code calling this does not wait for completion before returning
             Task.Factory.StartNew(() =>
@@ -121,11 +140,17 @@ namespace ConsoleMessageServer
                 //send out the array segements to the client
                 //in your homework, you will need to send a message to every connected client
                 //client.Send(bufferSegment);
-                foreach( WebSocketSession client in wsClients )
+                if( targetClient != null )
                 {
-                    client.Send(bufferSegment);
+                    targetClient.Send(bufferSegment);
                 }
-
+                else
+                {
+                    foreach( WebSocketSession client in wsClients )
+                    {
+                        client.Send(bufferSegment);
+                    }
+                }
             });
         }
 

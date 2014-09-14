@@ -14,7 +14,8 @@ namespace ConsoleMessageServer
     {
         Joined,
         Left,
-        Message
+        Message,
+        Command
     }
 
 
@@ -76,6 +77,8 @@ namespace ConsoleMessageServer
             client.OnMessage += OnMessage;
             //connect the clientmanager's onjoined event to the onjoined method in this server
             client.OnJoined += OnJoined;
+            //connect the clientmanager's oncommand event to the oncommand method in this server
+            client.onCommand += onCommand;
 
             //add the client to our TCP clients list
             //tcpClients.Add(client);
@@ -86,9 +89,10 @@ namespace ConsoleMessageServer
 
         //method will be called every time a clientmanager onleft event fires
         //will be called when clients send a left message
-        void OnLeft(ClientManager item)
+        void OnLeft(ClientManager item, string un)
         {
             //remove the client from our TCP clients list
+            sendChatMessage(un, " has disconnected.");
             tcpClients.Remove(item);
             //disconnect the client and discard the socket. False means that the socket cannot be used again. 
             //True means you can keep using the socket methods even though it's disconnected
@@ -107,8 +111,17 @@ namespace ConsoleMessageServer
             sendChatMessage(username, message);
         }
 
+        void onCommand(ClientManager client, string username, string message)
+        {
+            // TODO handle command
+            if( message == "list" )
+            {
+                sendChatMessage("TEST", "THIS IS A TEST YOU ENTERED LIST", client);
+            }
+        }
+
         //method to send chat messages to clients
-        void sendChatMessage(string username, string message)
+        void sendChatMessage(string username, string message, ClientManager singleClient = null)
         {
             //byte array to hold our parsing information - how long usernames are, how long messages are, etc
             byte[] packetBuffer = new byte[4];
@@ -134,10 +147,25 @@ namespace ConsoleMessageServer
             //send our byte array
             //lastClient.socket.Send(tcpMessage);
 
-            foreach( ClientManager client in tcpClients ){
-                client.socket.Send(tcpMessage);
+            if (singleClient != null)
+            {
+                // sending command to single client
+                singleClient.socket.Send(tcpMessage);
             }
-
+            else
+            {
+                // sending message to all clients
+                foreach (ClientManager client in tcpClients)
+                {
+                    try
+                    {
+                        client.socket.Send(tcpMessage);
+                    }
+                    catch (Exception e)
+                    {
+                    }
+                }
+            }
         }
 
     }

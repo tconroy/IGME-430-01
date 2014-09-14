@@ -22,3 +22,8 @@ C:\Users\Tom\Downloads\ConsoleMessageTCPChat\ConsoleMessageServer\obj\Debug\Cons
 C:\Users\Tom\Downloads\ConsoleMessageTCPChat\ConsoleMessageServer\bin\Debug\ConsoleMessageServer.exe
 C:\Users\Tom\Downloads\ConsoleMessageTCPChat\ConsoleMessageServer\bin\Debug\ConsoleMessageServer.pdb
 C:\Users\Tom\Downloads\ConsoleMessageTCPChat\ConsoleMessageServer\obj\Debug\ConsoleMessageServerReceive.csprojResolveAssemblyReference.cache
+C:\Users\Tom\Code\IGME-430-01\Homework\1 - C# Chat Client\TCPChat\ConsoleMessageServer\bin\Debug\ConsoleMessageServer.exe.config
+C:\Users\Tom\Code\IGME-430-01\Homework\1 - C# Chat Client\TCPChat\ConsoleMessageServer\bin\Debug\ConsoleMessageServer.exe
+C:\Users\Tom\Code\IGME-430-01\Homework\1 - C# Chat Client\TCPChat\ConsoleMessageServer\bin\Debug\ConsoleMessageServer.pdb
+C:\Users\Tom\Code\IGME-430-01\Homework\1 - C# Chat Client\TCPChat\ConsoleMessageServer\obj\Debug\ConsoleMessageServer.exe
+C:\Users\Tom\Code\IGME-430-01\Homework\1 - C# Chat Client\TCPChat\ConsoleMessageServer\obj\Debug\ConsoleMessageServer.pdb

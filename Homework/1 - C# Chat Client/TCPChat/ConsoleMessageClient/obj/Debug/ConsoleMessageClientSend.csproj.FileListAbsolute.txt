@@ -14,3 +14,8 @@ C:\Users\faculty\Desktop\Courses\RMIA 2\Week 1\ConsoleMessageTCP\ConsoleMessageC
 C:\Users\faculty\Desktop\Courses\RMIA 2\Week 1\ConsoleMessageTCP\ConsoleMessageClient\bin\Debug\ConsoleMessageClient.pdb
 C:\Users\faculty\Desktop\Courses\RMIA 2\Week 1\ConsoleMessageTCP\ConsoleMessageClient\obj\Debug\ConsoleMessageClient.exe
 C:\Users\faculty\Desktop\Courses\RMIA 2\Week 1\ConsoleMessageTCP\ConsoleMessageClient\obj\Debug\ConsoleMessageClient.pdb
+C:\Users\Tom\Code\IGME-430-01\Homework\1 - C# Chat Client\TCPChat\ConsoleMessageClient\bin\Debug\ConsoleMessageClient.exe.config
+C:\Users\Tom\Code\IGME-430-01\Homework\1 - C# Chat Client\TCPChat\ConsoleMessageClient\bin\Debug\ConsoleMessageClient.exe
+C:\Users\Tom\Code\IGME-430-01\Homework\1 - C# Chat Client\TCPChat\ConsoleMessageClient\bin\Debug\ConsoleMessageClient.pdb
+C:\Users\Tom\Code\IGME-430-01\Homework\1 - C# Chat Client\TCPChat\ConsoleMessageClient\obj\Debug\ConsoleMessageClient.exe
+C:\Users\Tom\Code\IGME-430-01\Homework\1 - C# Chat Client\TCPChat\ConsoleMessageClient\obj\Debug\ConsoleMessageClient.pdb

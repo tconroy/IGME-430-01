@@ -10,9 +10,10 @@ namespace ConsoleMessageServer
 {
     //delegate functions to use for our events
     //the methods that will be called are in the server class
-    public delegate void Left(ClientManager item);
+    public delegate void Left(ClientManager item, string username);
     public delegate void Joined(string username);
     public delegate void Message(string userName, string message);
+    public delegate void Command(ClientManager client, string username, string message);
 
     //class to hold and manage each TCP stream
     //each stream will listen independently so we will have an object for each
@@ -24,10 +25,13 @@ namespace ConsoleMessageServer
         public event Left OnLeft;
         public event Message OnMessage;
         public event Joined OnJoined;
+        public event Command onCommand;
 
         //This TCP connection's socket and stream along with accessors and mutators
         public Socket socket { get; set; }
         public NetworkStream networkStream { get; set; }
+
+        public string username;
 
         //constructor accepts a socket of the connected client
         public ClientManager(Socket clientSocket)
@@ -54,13 +58,22 @@ namespace ConsoleMessageServer
                     
                     //read in one byte from the stream starting at position [0] in the stream and write it to the buffer
                     //this will fill the buffer with one byte
+                    /*try
+                    {
+                        
+                    }
+                    catch (Exception e)
+                    { 
+                        // todo
+                    }*/
+
                     readBytes = this.networkStream.Read(buffer, 0, 1);
 
                     //variables to hold our message data
                     short usernameLength;
                     short messageLength;
-                    string username = "";
-                    string message = "";
+                    username = "";
+                    string message  = "";
 
                     //check if we actually read any bytes. If not the stream was empty
                     if (readBytes != 0)
@@ -94,7 +107,12 @@ namespace ConsoleMessageServer
                             //if the message type was left call the onLeft event which will call the delegate
                             else if (buffer[0] == (byte)MessageType.Left)
                             {
-                                OnLeft(this);
+                                OnLeft(this, username);
+                            }
+                            // if the user issued a command "/" delegate it here
+                            else if (buffer[0] == (byte)MessageType.Command)
+                            {
+                                onCommand(this, username, message);
                             }
                             //if the message type was message call the onMessage event which will call the delegate
                             else if (buffer[0] == (byte)MessageType.Message)
@@ -118,7 +136,7 @@ namespace ConsoleMessageServer
 
                 //if the loop breaks out because this socket gets disconnected
                 //call the onLeft event
-                OnLeft(this);
+                OnLeft(this, this.username);
 
             });
         }

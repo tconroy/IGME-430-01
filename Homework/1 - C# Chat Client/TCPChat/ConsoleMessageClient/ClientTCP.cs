@@ -15,7 +15,8 @@ namespace ConsoleMessageClient
     {
         Joined,
         Left,
-        Message
+        Message,
+        Command
     }
 
     class ClientTCP
@@ -69,7 +70,7 @@ namespace ConsoleMessageClient
             catch (Exception e)
             {
                 Console.WriteLine("Could not connect to server");
-                System.Environment.Exit(-1);
+                //System.Environment.Exit(-1);
             }
 
             //start new task to listen for new TCP data
@@ -90,8 +91,20 @@ namespace ConsoleMessageClient
                 //if they actually typed a message
                 if (text != "")
                 {
+                    MessageType type;
+                    if (text[0] == '/')
+                    {
+                        type = MessageType.Command;
+                        text = text.Substring(1);
+                    }
+                    else
+                    {
+                        type = MessageType.Message;
+                    }
+
                     //send a message to the server
-                    sendTCPData(username, MessageType.Message, text);
+                    sendTCPData(username, type, text);
+
                 }
             }
         }
